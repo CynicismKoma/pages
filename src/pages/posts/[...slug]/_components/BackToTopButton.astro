@@ -2,9 +2,9 @@
 import IconArrowLeft from "@/assets/icons/IconArrowLeft.svg";
 import IconArrowNarrowUp from "@/assets/icons/IconArrowNarrowUp.svg";
 import { useTranslations } from "@/i18n";
-import { getCurrentLocale } from "@/i18n/locale";
+import config from "@/config";
 
-const t = useTranslations(getCurrentLocale(Astro.url));
+const t = useTranslations(config.site.lang);
 ---
 
 <div

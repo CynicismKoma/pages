@@ -10,12 +10,11 @@ import IconX from "@/assets/icons/IconX.svg";
 import LinkButton from "./LinkButton.astro";
 import { stripBase, stripLocale } from "@/utils/withBase";
 import { useTranslations } from "@/i18n";
-import { getCurrentLocale } from "@/i18n/locale";
 import config from "@/config";
 
 const { site, features } = config;
 
-const locale = getCurrentLocale(Astro.url);
+const locale = config.site.lang;
 const t = useTranslations(locale);
 
 // Strip the base prefix so isActive comparisons work regardless of deploy subdirectory.
@@ -27,9 +26,6 @@ const pathWithoutTrailingSlash =
     : relativePath;
 
 const currentPath = stripLocale(pathWithoutTrailingSlash, locale);
-
-const oppositeLocale = locale === "zh" ? "en" : "zh";
-const oppositeUrl = getRelativeLocaleUrl(oppositeLocale, currentPath);
 
 const isActive = (path: string) => {
   const currentPathArray = currentPath.split("/").filter(p => p.trim());
@@ -163,15 +159,6 @@ const isActive = (path: string) => {
             </li>
           )
         }
-        <li class="col-span-1 flex items-center justify-center">
-          <a
-            href={oppositeUrl}
-            class="focus-outline text-accent hover:text-accent-foreground px-2 py-1 text-sm font-semibold transition-colors"
-            aria-label={locale === "zh" ? "Switch to English" : "切换到中文"}
-          >
-            {locale === "zh" ? "EN" : "中文"}
-          </a>
-        </li>
       </ul>
     </nav>
   </div>

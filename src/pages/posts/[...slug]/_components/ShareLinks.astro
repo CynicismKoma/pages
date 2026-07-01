@@ -1,11 +1,10 @@
 ---
 import LinkButton from "@/components/LinkButton.astro";
 import { tplStr, useTranslations } from "@/i18n";
-import { getCurrentLocale } from "@/i18n/locale";
 import config from "@/config";
 
 const { shareLinks } = config;
-const t = useTranslations(getCurrentLocale(Astro.url));
+const t = useTranslations(config.site.lang);
 
 const icons = import.meta.glob<{
   default: (_props: Record<string, unknown>) => unknown;

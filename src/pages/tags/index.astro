@@ -8,13 +8,12 @@ import Footer from "@/components/Footer.astro";
 import Tag from "@/components/Tag.astro";
 import { getUniqueTags } from "@/utils/getUniqueTags";
 import { useTranslations } from "@/i18n";
-import { getCurrentLocale } from "@/i18n/locale";
 import config from "@/config";
 
 const posts = await getCollection("posts", ({ data }) => !data.draft);
 const tags = getUniqueTags(posts);
 
-const locale = getCurrentLocale(Astro.url);
+const locale = config.site.lang;
 const t = useTranslations(locale);
 ---
 

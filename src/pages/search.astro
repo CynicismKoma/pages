@@ -8,10 +8,9 @@ import Main from "@/components/Main.astro";
 import Footer from "@/components/Footer.astro";
 import { getAssetPath } from "@/utils/withBase";
 import { useTranslations } from "@/i18n";
-import { getCurrentLocale } from "@/i18n/locale";
 import config from "@/config";
 
-const locale = getCurrentLocale(Astro.url);
+const locale = config.site.lang;
 
 // Redirect to 404 page if `search` feature is not enabled
 const notFoundUrl = getRelativeLocaleUrl(locale, "404");

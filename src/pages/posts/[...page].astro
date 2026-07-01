@@ -10,7 +10,6 @@ import Footer from "@/components/Footer.astro";
 import Pagination from "@/components/Pagination.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { useTranslations } from "@/i18n";
-import { getCurrentLocale } from "@/i18n/locale";
 import config from "@/config";
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -20,7 +19,7 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 const { page } = Astro.props;
 
-const locale = getCurrentLocale(Astro.url);
+const locale = config.site.lang;
 const t = useTranslations(locale);
 ---
 

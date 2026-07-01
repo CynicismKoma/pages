@@ -4,7 +4,6 @@ import { ClientRouter } from "astro:transitions";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { resolveDefaultOgImagePath } from "@/utils/resolveDefaultOgImagePath";
 import { getAssetPath } from "@/utils/withBase";
-import { getCurrentLocale } from "@/i18n/locale";
 import config from "@/config";
 import "@/styles/global.css";
 
@@ -26,7 +25,7 @@ const {
 
 const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
 const rssHref = getRelativeLocaleUrl(
-  getCurrentLocale(Astro.url),
+  config.site.lang,
   "rss.xml"
 );
 ---
@@ -34,7 +33,7 @@ const rssHref = getRelativeLocaleUrl(
 <!doctype html>
 <html
   dir={site.dir ?? "ltr"}
-  lang={getCurrentLocale(Astro.url)}
+  lang={config.site.lang}
   class="overflow-y-scroll scroll-smooth"
 >
   <head>

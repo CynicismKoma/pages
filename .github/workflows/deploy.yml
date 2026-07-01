@@ -24,13 +24,11 @@ jobs:
           fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "pnpm"
 
       - name: Setup Pages
@@ -40,8 +38,7 @@ jobs:
         run: pnpm install
 
       - name: Build with Astro
-        run: |
-          pnpm build
+        run: pnpm astro build && pnpm pagefind --site dist
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

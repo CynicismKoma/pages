@@ -10,11 +10,12 @@ import IconX from "@/assets/icons/IconX.svg";
 import LinkButton from "./LinkButton.astro";
 import { stripBase, stripLocale } from "@/utils/withBase";
 import { useTranslations } from "@/i18n";
+import { getCurrentLocale } from "@/i18n/locale";
 import config from "@/config";
 
 const { site, features } = config;
 
-const locale = Astro.currentLocale ?? config.site.lang;
+const locale = getCurrentLocale(Astro.url);
 const t = useTranslations(locale);
 
 // Strip the base prefix so isActive comparisons work regardless of deploy subdirectory.

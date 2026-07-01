@@ -1,37 +1,26 @@
 ---
-title: "About"
-description: "A bit about me and this blog."
+title: "关于"
+description: "关于我和这个博客。"
 ---
 
-AstroPaper is a minimal, accessible and SEO-friendly blog theme built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
+# 👋 你好，我是 Koma
 
-![Astro Paper](@/assets/images/astropaper-og.jpg)
+欢迎来到我的个人博客！这里是我记录技术探索、项目实践和日常思考的地方。
 
-AstroPaper provides a solid foundation for blogs, or even portfolios\_ with full markdown support, built-in dark mode, and a clean layout that works out-of-the-box.
+## 关于这个博客
 
-The blog posts in this theme also serve as guides, docs or example articles\_ making AstroPaper a flexible starting point for your next content-driven site.
+这个博客使用 [Astro](https://astro.build/) 和 [Tailwind CSS](https://tailwindcss.com/) 构建，
+基于 [AstroPaper](https://github.com/satnaing/astro-paper) 主题定制而成。
 
-## Features
+## 在这里你能找到
 
-AstroPaper comes with a set of useful features that make content publishing easy and effective:
+- 💻 技术文章与学习笔记
+- 🚀 项目经验分享
+- 📝 日常随笔与思考
+- 🔧 实用工具与技巧
 
-- SEO-friendly
-- Fast performance
-- Light & dark mode
-- Highly customizable
-- Organizable blog posts
-- Responsive & accessible
-- Static search with [PageFind](https://pagefind.app/)
-- Automatic social image generation
+## 联系我
 
-and so much more.
+- GitHub: [@CynicismKoma](https://github.com/CynicismKoma)
 
-## Show your support
-
-If you like [AstroPaper](https://github.com/satnaing/astro-paper), consider giving it a star ⭐️.
-
-Found a bug 🐛 or have an improvement ✨ in mind? Feel free to open an [issue](https://github.com/satnaing/astro-paper/issues), submit a [pull request](https://github.com/satnaing/astro-paper/pulls) or start a [discussion](https://github.com/satnaing/astro-paper/discussions).
-
-If you find this theme helpful, you can also [sponsor me on GitHub](https://github.com/sponsors/satnaing) or [buy me a coffee](https://buymeacoffee.com/satnaing) to show your support — every penny counts.
-
-Kyay zuu! 🙏🏼
+欢迎交流，感谢你的来访！🙏

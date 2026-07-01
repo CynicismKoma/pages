@@ -6,28 +6,28 @@ featured: true
 ogImage: assets/AstroPaper-v6.png
 tags:
   - release
-description: "AstroPaper v6: a from-scratch rewrite on Astro v6, Tailwind v4, and a new config system."
+description: "AstroPaper v6：基于 Astro v6、Tailwind v4 和全新配置系统的从头重写。"
 ---
 
-AstroPaper v6 is a complete rewrite built on Astro v6, Tailwind CSS v4, and TypeScript v6. This release replaces the legacy `SITE` / `constants.ts` configuration with a single unified config file and introduces several structural improvements across the codebase.
+AstroPaper v6 是一次基于 Astro v6、Tailwind CSS v4 和 TypeScript v6 的完整重写。此版本用单一统一配置文件替换了旧的 `SITE` / `constants.ts` 配置，并在代码库中引入了若干结构性改进。
 
 ![AstroPaper v6](assets/AstroPaper-v6.png)
 
-## Table of contents
+## 目录
 
-## Major Changes
+## 主要变化
 
-### Upgrade to Astro v6
+### 升级到 Astro v6
 
-AstroPaper now ships with Astro v6.3, which includes:
+AstroPaper 现在搭载 Astro v6.3，其中包括：
 
-- **Stable Content Layer API** — `glob()` loader replaces the old `type: "content"` collection pattern.
-- **Stable Fonts API** — `experimental.fonts` has graduated to a top-level `fonts` key in `astro.config.ts`.
-- **TypeScript v6** — full support for the latest TypeScript compiler.
+- **稳定的 Content Layer API** — `glob()` 加载器取代了旧的 `type: "content"` 集合模式。
+- **稳定的字体 API** — `experimental.fonts` 已升级为 `astro.config.ts` 中的顶级 `fonts` 键。
+- **TypeScript v6** — 完全支持最新的 TypeScript 编译器。
 
-### New unified config system
+### 新的统一配置系统
 
-The flat `SITE` object in `src/config.ts` and the separate `constants.ts` file have been replaced by a single `astro-paper.config.ts` at the project root. Use `defineAstroPaperConfig()` for full IntelliSense:
+`src/config.ts` 中的扁平 `SITE` 对象和单独的 `constants.ts` 文件已被项目根目录的单个 `astro-paper.config.ts` 文件取代。使用 `defineAstroPaperConfig()` 获取完整的 IntelliSense 支持：
 
 ```ts file="astro-paper.config.ts"
 import { defineAstroPaperConfig } from "./src/types/config";
@@ -45,7 +45,7 @@ export default defineAstroPaperConfig({
   posts: {
     perPage: 4,
     perIndex: 4,
-    scheduledPostMargin: 15 * 60 * 1000, // ms
+    scheduledPostMargin: 15 * 60 * 1000, // 毫秒
   },
   features: {
     lightAndDarkMode: true,
@@ -60,11 +60,11 @@ export default defineAstroPaperConfig({
 });
 ```
 
-All options — site metadata, pagination, feature flags, social links, and share links — now live in one file.
+所有选项——站点元数据、分页、功能标志、社交链接和分享链接——现在都位于一个文件中。
 
-### Stable Fonts API
+### 稳定的字体 API
 
-Font configuration has graduated from `experimental.fonts` to a top-level `fonts` key in `astro.config.ts`, matching Astro v6's stable API:
+字体配置已从 `experimental.fonts` 升级为 `astro.config.ts` 中的顶级 `fonts` 键，与 Astro v6 的稳定 API 保持一致：
 
 ```ts file="astro.config.ts"
 export default defineConfig({
@@ -80,13 +80,13 @@ export default defineConfig({
 });
 ```
 
-### MDX support
+### MDX 支持
 
-`@astrojs/mdx` is now included. Posts can use the `.mdx` extension to embed components, use JSX expressions, and import from other files. The content loader pattern `**/[^_]*.{md,mdx}` picks up both formats automatically.
+现在包含了 `@astrojs/mdx`。文章可以使用 `.mdx` 扩展名来嵌入组件、使用 JSX 表达式以及从其他文件导入。内容加载器模式 `**/[^_]*.{md,mdx}` 会自动包含两种格式。
 
-### Content collection restructure
+### 内容集合重组
 
-Blog posts have moved from `src/data/blog/` to `src/content/posts/`, aligning with Astro conventions. A new `pages` collection at `src/content/pages/` covers standalone pages (About, etc.). The `posts` collection uses Astro's `glob()` loader — `defineCollection` with `type: "content"` is no longer used:
+博客文章已从 `src/data/blog/` 移至 `src/content/posts/`，与 Astro 约定保持一致。`src/content/pages/` 下新增的 `pages` 集合涵盖独立页面（关于等）。`posts` 集合使用 Astro 的 `glob()` 加载器——不再使用带有 `type: "content"` 的 `defineCollection`：
 
 ```ts file="src/content.config.ts"
 const posts = defineCollection({
@@ -103,9 +103,9 @@ const posts = defineCollection({
 });
 ```
 
-### Design token system
+### 设计令牌系统
 
-The 5-token color palette from v5 has grown to 7 tokens in `src/styles/theme.css`. Tokens are defined as CSS custom properties and registered to Tailwind v4 via `@theme inline`:
+v5 的 5 令牌调色板已扩展到 `src/styles/theme.css` 中的 7 个令牌。令牌被定义为 CSS 自定义属性，并通过 `@theme inline` 注册到 Tailwind v4：
 
 ```css file="src/styles/theme.css"
 @theme inline {
@@ -140,29 +140,29 @@ The 5-token color palette from v5 has grown to 7 tokens in `src/styles/theme.css
 }
 ```
 
-`theme.css` is a separate file imported by `global.css`. The two new tokens are `--accent-foreground` and `--muted-foreground`.
+`theme.css` 是由 `global.css` 导入的独立文件。两个新令牌是 `--accent-foreground` 和 `--muted-foreground`。
 
-### i18n string extraction
+### i18n 字符串提取
 
-All UI strings are extracted to `src/i18n/lang/en.ts` with the `UIStrings` interface. Adding a new language requires only a new file in `src/i18n/lang/`:
+所有 UI 字符串已提取到 `src/i18n/lang/en.ts`，使用 `UIStrings` 接口。添加新语言只需在 `src/i18n/lang/` 中新建一个文件：
 
 ```ts file="src/i18n/lang/en.ts"
 export default {
-  nav: { home: "Home", posts: "Posts" /* … */ },
-  post: { publishedAt: "Published at" /* … */ },
+  nav: { home: "首页", posts: "文章" /* … */ },
+  post: { publishedAt: "发布于" /* … */ },
   /* … */
 } satisfies UIStrings;
 ```
 
-The `tplStr()` helper handles parameterized strings so translators can reorder tokens freely.
+`tplStr()` 助手处理参数化字符串，使翻译人员可以自由重新排列标记。
 
-### Base path and subdirectory deploy support
+### 基础路径和子目录部署支持
 
-All internal links go through `getRelativeLocaleUrl()` and the `withBase.ts` helpers (`stripLocale`, `stripBase`, `getAssetPath`). Deploying to a subdirectory (e.g. `/astro-paper`) works without manual link updates.
+所有内部链接都通过 `getRelativeLocaleUrl()` 和 `withBase.ts` 助手（`stripLocale`、`stripBase`、`getAssetPath`）。部署到子目录（例如 `/astro-paper`）无需手动更新链接。
 
-### Google Site Verification via config
+### 通过配置进行 Google 站点验证
 
-The preferred way to set Google Site Verification is `site.googleVerification` in `astro-paper.config.ts`:
+设置 Google 站点验证的首选方式是通过 `astro-paper.config.ts` 中的 `site.googleVerification`：
 
 ```ts file="astro-paper.config.ts"
 export default defineAstroPaperConfig({
@@ -173,27 +173,27 @@ export default defineAstroPaperConfig({
 });
 ```
 
-The `PUBLIC_GOOGLE_SITE_VERIFICATION` environment variable is still supported as a fallback for cases where you prefer not to commit the value to the config file.
+`PUBLIC_GOOGLE_SITE_VERIFICATION` 环境变量仍然支持作为后备方案，适用于不希望将值提交到配置文件的情况。
 
 ```bash file=".env"
 PUBLIC_GOOGLE_SITE_VERIFICATION=your-google-site-verification-value
 ```
 
-When both are set, `site.googleVerification` takes precedence.
+当两者都设置时，`site.googleVerification` 优先。
 
-## Other Notable Changes
+## 其他值得注意的变化
 
-- Updated and renamed helper/util functions.
-- Adjacent post navigation (prev/next) is now computed once in `getStaticPaths` and passed as props — the component no longer fetches all posts per page.
-- `_components/` scoping: post-specific components live under `pages/posts/[...slug]/_components/` and do not pollute the global `src/components/` directory.
-- `PostLayout.astro` handles structured data and SEO only — post page logic lives in the page file itself.
+- 更新并重命名了助手/工具函数。
+- 相邻文章导航（上一篇/下一篇）现在在 `getStaticPaths` 中一次性计算并作为 props 传递——组件不再每页获取所有文章。
+- `_components/` 作用域：文章特定组件位于 `pages/posts/[...slug]/_components/` 下，不会污染全局的 `src/components/` 目录。
+- `PostLayout.astro` 仅处理结构化数据和 SEO——文章页面逻辑位于页面文件本身。
 
-## Summary
+## 总结
 
-AstroPaper v6 retains its minimal, clean look while rebuilding the internals around Astro v6's new primitives. The config system is simpler, the codebase is easier to navigate, and the theme ships ready for i18n and subdirectory deployments out of the box.
+AstroPaper v6 保留了其极简干净的外观，同时围绕 Astro v6 的新原语重建了内部结构。配置系统更简单，代码库更易于导航，主题开箱即用支持 i18n 和子目录部署。
 
-## See also
+## 另请参阅
 
-- [Predefined Color Schemes](/posts/predefined-color-schemes/)
-- [How to configure AstroPaper theme](/posts/how-to-configure-astropaper-theme/)
-- [Adding new posts in AstroPaper](/posts/adding-new-posts-in-astropaper-theme)
+- [预定义配色方案](/posts/predefined-color-schemes/)
+- [如何配置 AstroPaper 主题](/posts/how-to-configure-astropaper-theme/)
+- [在 AstroPaper 中添加新文章](/posts/adding-new-posts-in-astropaper-theme)

@@ -8,6 +8,7 @@ export default {
     about: "关于",
     archives: "归档",
     search: "搜索",
+    bookmarks: "书签",
   },
   post: {
     publishedAt: "发布于",
@@ -48,6 +49,8 @@ export default {
     archivesDesc: "我归档的所有文章。",
     searchTitle: "搜索",
     searchDesc: "搜索任意文章...",
+    bookmarksTitle: "书签",
+    bookmarksDesc: "收藏的网页链接。",
   },
   a11y: {
     skipToContent: "跳转到内容",

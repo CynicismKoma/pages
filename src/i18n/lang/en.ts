@@ -8,6 +8,7 @@ export default {
     about: "About",
     archives: "Archives",
     search: "Search",
+    bookmarks: "Bookmarks",
   },
   post: {
     publishedAt: "Published at",
@@ -52,6 +53,9 @@ export default {
 
     searchTitle: "Search",
     searchDesc: "Search any article ...",
+
+    bookmarksTitle: "Bookmarks",
+    bookmarksDesc: "Saved bookmarks.",
   },
   a11y: {
     skipToContent: "Skip to content",

@@ -122,6 +122,14 @@ const isActive = (path: string) => {
             </li>
           )
         }
+        <li class="col-span-2">
+          <a
+            href={getRelativeLocaleUrl(locale, "bookmarks")}
+            class:list={{ "active-nav": isActive("/bookmarks") }}
+          >
+            {t.nav.bookmarks}
+          </a>
+        </li>
         {
           features.search !== false && (
             <li class="col-span-1 flex items-center justify-center">

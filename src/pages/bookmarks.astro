@@ -1,0 +1,161 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+const locale = config.site.lang;
+const t = useTranslations(locale);
+---
+
+<Layout title={`${t.pages.bookmarksTitle} | ${config.site.title}`}>
+  <Header />
+
+  <Breadcrumb />
+
+  <Main
+    pageTitle={t.pages.bookmarksTitle}
+    pageDesc={t.pages.bookmarksDesc}
+  >
+    <div id="bookmarks-app" class="mt-6">
+      <form id="bookmark-form" class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end">
+        <div class="flex-1">
+          <label for="bm-title" class="mb-1 block text-sm font-medium">标题</label>
+          <input
+            id="bm-title"
+            type="text"
+            placeholder="输入书签名称"
+            required
+            class="border-border bg-background text-foreground focus:border-accent w-full rounded border px-3 py-2 outline-none transition-colors"
+          />
+        </div>
+        <div class="flex-1">
+          <label for="bm-url" class="mb-1 block text-sm font-medium">链接</label>
+          <input
+            id="bm-url"
+            type="url"
+            placeholder="https://example.com"
+            required
+            class="border-border bg-background text-foreground focus:border-accent w-full rounded border px-3 py-2 outline-none transition-colors"
+          />
+        </div>
+        <button
+          type="submit"
+          class="bg-accent text-accent-foreground hover:opacity-90 shrink-0 rounded px-6 py-2 font-medium transition-opacity"
+        >
+          添加
+        </button>
+      </form>
+
+      <div id="bookmark-list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      </div>
+
+      <div id="empty-state" class="border-border text-muted-foreground mt-12 rounded border border-dashed p-12 text-center">
+        <p class="text-lg">暂无书签</p>
+        <p class="mt-1 text-sm">在上方添加你喜欢的网页链接</p>
+      </div>
+    </div>
+  </Main>
+
+  <Footer />
+</Layout>
+
+<script>
+  interface Bookmark {
+    id: string;
+    title: string;
+    url: string;
+    createdAt: string;
+  }
+
+  const STORAGE_KEY = "muye-bookmarks";
+
+  function getBookmarks(): Bookmark[] {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  }
+
+  function saveBookmarks(bookmarks: Bookmark[]) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
+  }
+
+  function render() {
+    const list = document.getElementById("bookmark-list")!;
+    const empty = document.getElementById("empty-state")!;
+    const bookmarks = getBookmarks();
+
+    if (bookmarks.length === 0) {
+      list.innerHTML = "";
+      empty.classList.remove("hidden");
+      return;
+    }
+    empty.classList.add("hidden");
+
+    list.innerHTML = bookmarks
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .map(
+        (bm) => `
+          <div class="border-border bg-background hover:border-accent/50 group relative rounded-lg border p-4 transition-colors">
+            <a
+              href="${bm.url}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-accent hover:underline mb-1 block font-medium truncate"
+              title="${bm.title}"
+            >
+              ${bm.title}
+            </a>
+            <p class="text-muted-foreground truncate text-xs">${bm.url}</p>
+            <button
+              data-id="${bm.id}"
+              class="text-muted-foreground hover:text-red-500 absolute top-2 right-2 flex size-6 items-center justify-center rounded text-lg opacity-0 transition-all group-hover:opacity-100"
+              title="删除"
+            >
+              ×
+            </button>
+          </div>
+        `
+      )
+      .join("");
+
+    list.querySelectorAll("[data-id]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = (btn as HTMLElement).dataset.id;
+        const bookmarks = getBookmarks().filter((b) => b.id !== id);
+        saveBookmarks(bookmarks);
+        render();
+      });
+    });
+  }
+
+  document.getElementById("bookmark-form")!.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const titleInput = document.getElementById("bm-title") as HTMLInputElement;
+    const urlInput = document.getElementById("bm-url") as HTMLInputElement;
+    const title = titleInput.value.trim();
+    const url = urlInput.value.trim();
+
+    if (!title || !url) return;
+
+    const bookmarks = getBookmarks();
+    bookmarks.push({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      title,
+      url,
+      createdAt: new Date().toISOString(),
+    });
+    saveBookmarks(bookmarks);
+    titleInput.value = "";
+    urlInput.value = "";
+    render();
+  });
+
+  document.addEventListener("astro:page-load", render);
+</script>

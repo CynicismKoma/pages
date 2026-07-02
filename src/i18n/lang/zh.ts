@@ -4,7 +4,6 @@ export default {
   nav: {
     home: "首页",
     posts: "文章",
-    tags: "标签",
     about: "关于",
     archives: "归档",
     search: "搜索",
@@ -35,14 +34,10 @@ export default {
     allPosts: "所有文章",
   },
   footer: {
-    copyright: "版权所有",
-    allRightsReserved: "保留所有权利。",
+    copyright: "©",
+    allRightsReserved: "Koma",
   },
   pages: {
-    tagTitle: "标签",
-    tagDesc: "所有包含该标签的文章",
-    tagsTitle: "所有标签",
-    tagsDesc: "文章中使用的所有标签。",
     postsTitle: "文章",
     postsDesc: "我发布的所有文章。",
     archivesTitle: "归档",

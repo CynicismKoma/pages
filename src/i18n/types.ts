@@ -2,7 +2,6 @@ export interface UIStrings {
   nav: {
     home: string;
     posts: string;
-    tags: string;
     about: string;
     archives: string;
     search: string;
@@ -37,12 +36,6 @@ export interface UIStrings {
     allRightsReserved: string;
   };
   pages: {
-    tagTitle: string;
-    tagDesc: string;
-
-    tagsTitle: string;
-    tagsDesc: string;
-
     postsTitle: string;
     postsDesc: string;
 

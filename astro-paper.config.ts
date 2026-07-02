@@ -3,7 +3,7 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://cynicismkoma.github.io/",
-    title: "CynicismKoma's Blog",
+    title: "牧野随想",
     description: "A minimal, responsive and SEO-friendly Astro blog theme.",
     author: "Koma",
     profile: "https://github.com/CynicismKoma",

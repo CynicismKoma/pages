@@ -60,6 +60,15 @@ const options: ISourceOptions = {
 };
 ---
 
+<script>
+  import { initParticlesEngine } from "@tsparticles/astro";
+  import { loadSlim } from "@tsparticles/slim";
+
+  initParticlesEngine(async (engine) => {
+    await loadSlim(engine);
+  });
+</script>
+
 <Particles id="tsparticles" options={options} />
 
 <style is:global>

@@ -81,6 +81,8 @@ const t = useTranslations(locale);
   }
 
   const STORAGE_KEY = "muye-bookmarks";
+  const STORAGE_VER_KEY = "muye-bookmarks-ver";
+  const STORAGE_VERSION = 2;
 
   const DEFAULT_BOOKMARKS: Bookmark[] = [
     { id: "e0", title: "Google 新闻", url: "https://news.google.com/foryou?hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans", folder: "收藏夹栏", createdAt: "2026-07-02T00:00:00.000Z" },
@@ -239,7 +241,8 @@ const t = useTranslations(locale);
   function getBookmarks(): Bookmark[] {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) {
+      const ver = parseInt(localStorage.getItem(STORAGE_VER_KEY) || "0", 10);
+      if (!raw || ver < STORAGE_VERSION) {
         saveBookmarks(DEFAULT_BOOKMARKS);
         return DEFAULT_BOOKMARKS;
       }
@@ -251,6 +254,7 @@ const t = useTranslations(locale);
 
   function saveBookmarks(bookmarks: Bookmark[]) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
+    localStorage.setItem(STORAGE_VER_KEY, String(STORAGE_VERSION));
   }
 
   function render() {

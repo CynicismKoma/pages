@@ -20,9 +20,6 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.3.0
         version: 4.3.0(vite@7.3.3(@types/node@24.12.2)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.3))
-      '@tsparticles/astro':
-        specifier: ^4.3.0
-        version: 4.3.0(@tsparticles/engine@4.3.0)(astro@6.4.2(@types/node@24.12.2)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.60.4)(yaml@2.8.3))
       '@tsparticles/engine':
         specifier: ^4.3.0
         version: 4.3.0
@@ -949,12 +946,6 @@ packages:
     resolution: {integrity: sha512-ac3eCs+kRC37IZ3JutsoOGaP89bLepMEKMQ9n4vgo1Eu2GV5AE9Fw++B0xOyWtL2wsMdFgx7RVVnw3apYmXMVA==}
     peerDependencies:
       '@tsparticles/engine': 4.3.0
-
-  '@tsparticles/astro@4.3.0':
-    resolution: {integrity: sha512-TtKYryEmx85799nWZg4GpbfDs3Q3AnRilP0v5Eaw7iV684kG/mKjxSeKnPY/19vU3/q6FDqdgsNkTlE2V/os/Q==}
-    peerDependencies:
-      '@tsparticles/engine': workspace:*
-      astro: ^6
 
   '@tsparticles/basic@4.3.0':
     resolution: {integrity: sha512-OSG4jYh9y09IM+WwZN2cIc1TGjzgDMTqLOxDNctjpFOR9UfnKptaSTSPwcdQZtM2QkPZvc2hmsFtDvbVfUfkRg==}
@@ -3823,11 +3814,6 @@ snapshots:
   '@tsparticles/animation-utils@4.3.0(@tsparticles/engine@4.3.0)':
     dependencies:
       '@tsparticles/engine': 4.3.0
-
-  '@tsparticles/astro@4.3.0(@tsparticles/engine@4.3.0)(astro@6.4.2(@types/node@24.12.2)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.60.4)(yaml@2.8.3))':
-    dependencies:
-      '@tsparticles/engine': 4.3.0
-      astro: 6.4.2(@types/node@24.12.2)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.60.4)(yaml@2.8.3)
 
   '@tsparticles/basic@4.3.0':
     dependencies:

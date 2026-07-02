@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { getPostUrl } from "@/utils/getPostPaths";
+import { getSummary } from "@/utils/getSummary";
 import config from "@/config";
 import { toTransitionName } from "@/utils/toTransitionName";
 import Datetime from "./Datetime.astro";
@@ -9,9 +10,10 @@ type Props = {
   variant?: "h2" | "h3";
 } & CollectionEntry<"posts">;
 
-const { variant: Heading = "h2", id, data, filePath } = Astro.props;
+const { variant: Heading = "h2", id, data, filePath, body } = Astro.props;
 
-const { title, description, ...props } = data;
+const { title, ...props } = data;
+const summary = getSummary(body ?? "");
 ---
 
 <li class="my-6">
@@ -28,5 +30,5 @@ const { title, description, ...props } = data;
     </Heading>
   </a>
   <Datetime {...props} />
-  <p>{description}</p>
+  <p>{summary}</p>
 </li>

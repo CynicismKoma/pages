@@ -16,10 +16,7 @@ const t = useTranslations(locale);
 
   <Breadcrumb />
 
-  <Main
-    pageTitle={t.pages.bookmarksTitle}
-    pageDesc={t.pages.bookmarksDesc}
-  >
+  <Main>
     <div id="bookmarks-app" class="mt-6">
       <form id="bookmark-form" class="border-border mb-8 flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-end">
         <div class="flex-1">
@@ -294,8 +291,6 @@ const t = useTranslations(locale);
       // Both are bookmarks
       return (a.bookmarks[0]?.createdAt || "").localeCompare(b.bookmarks[0]?.createdAt || "") * -1;
     });
-
-    const isSub = depth > 0;
 
     for (const node of sorted) {
       if (node.bookmarks.length === 1 && node.children.length === 0) {

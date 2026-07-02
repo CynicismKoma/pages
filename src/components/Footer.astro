@@ -11,7 +11,6 @@ type Props = {
 const { noMarginTop = false, class: className, ...attrs } = Astro.props;
 
 const t = useTranslations(config.site.lang);
-const currentYear = new Date().getFullYear();
 ---
 
 <footer
@@ -23,7 +22,7 @@ const currentYear = new Date().getFullYear();
   >
     <Socials />
       <div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row">
-        <span>{t.footer.copyright} {currentYear} {t.footer.allRightsReserved}</span>
+        <span>{t.footer.copyright} {t.footer.allRightsReserved}</span>
     </div>
   </div>
 </footer>

@@ -338,7 +338,7 @@ const t = useTranslations(locale);
         const subHtml = renderTree(node.children, depth + 1);
 
         html += `
-          <details class="group mb-3"${depth < 2 ? " open" : ""}>
+          <details class="group mb-3">
             <summary class="hover:text-accent mb-2 flex cursor-pointer items-center gap-1.5 text-sm font-semibold select-none py-0.5">
               <span class="text-muted-foreground transition-transform group-open:rotate-90 text-xs leading-none">▶</span>
               <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>

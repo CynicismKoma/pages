@@ -11,7 +11,7 @@ const lightColor = "#006cac";
 const darkColor = "#ff6b01";
 
 const options: ISourceOptions = {
-  fullScreen: { zIndex: -1 },
+  fullScreen: { zIndex: 0 },
   particles: {
     number: { value: 60, density: { enable: true } },
     color: { value: lightColor },
@@ -72,12 +72,14 @@ const options: ISourceOptions = {
 <Particles id="tsparticles" options={options} />
 
 <style is:global>
-  #tsparticles {
+  astro-particles {
     position: fixed;
     inset: 0;
+    z-index: 0;
     pointer-events: none;
+    display: block;
   }
-  #tsparticles canvas {
+  astro-particles canvas {
     display: block;
   }
 </style>

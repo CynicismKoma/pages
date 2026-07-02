@@ -21,39 +21,47 @@ const t = useTranslations(locale);
     pageDesc={t.pages.bookmarksDesc}
   >
     <div id="bookmarks-app" class="mt-6">
-      <form id="bookmark-form" class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end">
+      <form id="bookmark-form" class="border-border mb-8 flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-end">
         <div class="flex-1">
-          <label for="bm-title" class="mb-1 block text-sm font-medium">标题</label>
+          <label for="bm-title" class="mb-1 block text-xs font-medium">标题</label>
           <input
             id="bm-title"
             type="text"
             placeholder="输入书签名称"
             required
-            class="border-border bg-background text-foreground focus:border-accent w-full rounded border px-3 py-2 outline-none transition-colors"
+            class="border-border bg-background text-foreground focus:border-accent w-full rounded border px-3 py-2 text-sm outline-none transition-colors"
           />
         </div>
         <div class="flex-1">
-          <label for="bm-url" class="mb-1 block text-sm font-medium">链接</label>
+          <label for="bm-url" class="mb-1 block text-xs font-medium">链接</label>
           <input
             id="bm-url"
             type="url"
             placeholder="https://example.com"
             required
-            class="border-border bg-background text-foreground focus:border-accent w-full rounded border px-3 py-2 outline-none transition-colors"
+            class="border-border bg-background text-foreground focus:border-accent w-full rounded border px-3 py-2 text-sm outline-none transition-colors"
+          />
+        </div>
+        <div class="w-full sm:w-36">
+          <label for="bm-folder" class="mb-1 block text-xs font-medium">文件夹</label>
+          <input
+            id="bm-folder"
+            type="text"
+            placeholder="未分类"
+            class="border-border bg-background text-foreground focus:border-accent w-full rounded border px-3 py-2 text-sm outline-none transition-colors"
           />
         </div>
         <button
           type="submit"
-          class="bg-accent text-accent-foreground hover:opacity-90 shrink-0 rounded px-6 py-2 font-medium transition-opacity"
+          class="bg-accent text-accent-foreground hover:opacity-90 shrink-0 rounded px-6 py-2 text-sm font-medium transition-opacity"
         >
           添加
         </button>
       </form>
 
-      <div id="bookmark-list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      </div>
+      <div id="bookmark-groups"></div>
 
-      <div id="empty-state" class="border-border text-muted-foreground mt-12 rounded border border-dashed p-12 text-center">
+      <div id="empty-state" class="border-border text-muted-foreground mt-12 hidden rounded border border-dashed p-12 text-center">
         <p class="text-lg">暂无书签</p>
         <p class="mt-1 text-sm">在上方添加你喜欢的网页链接</p>
       </div>
@@ -68,14 +76,32 @@ const t = useTranslations(locale);
     id: string;
     title: string;
     url: string;
+    folder: string;
     createdAt: string;
   }
 
   const STORAGE_KEY = "muye-bookmarks";
 
+  const DEFAULT_BOOKMARKS: Bookmark[] = [
+    { id: "default-1", title: "Google 新闻", url: "https://news.google.com/foryou?hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans", folder: "资讯", createdAt: "2026-07-01T00:00:00.000Z" },
+    { id: "default-2", title: "InfoQ", url: "https://www.infoq.cn/", folder: "资讯", createdAt: "2026-07-01T00:00:01.000Z" },
+    { id: "default-3", title: "36氪", url: "https://36kr.com/", folder: "资讯", createdAt: "2026-07-01T00:00:02.000Z" },
+    { id: "default-4", title: "ChatGPT", url: "https://chatgpt.com/", folder: "AI 工具", createdAt: "2026-07-01T00:00:03.000Z" },
+    { id: "default-5", title: "通义千问", url: "https://www.qianwen.com/live/", folder: "AI 工具", createdAt: "2026-07-01T00:00:04.000Z" },
+    { id: "default-6", title: "Gemini AI Studio", url: "https://aistudio.google.com/prompts/new_chat", folder: "AI 工具", createdAt: "2026-07-01T00:00:05.000Z" },
+    { id: "default-7", title: "NotebookLM", url: "https://notebooklm.google.com/notebook/38c091af-36e9-4742-b594-96d064558cac", folder: "AI 工具", createdAt: "2026-07-01T00:00:06.000Z" },
+    { id: "default-8", title: "GitHub Trending", url: "https://github.com/trending", folder: "开发者", createdAt: "2026-07-01T00:00:07.000Z" },
+    { id: "default-9", title: "Bing 翻译", url: "https://www.bing.com/translator?setlang=zh-cn&mkt=zh-CN", folder: "工具", createdAt: "2026-07-01T00:00:08.000Z" },
+  ];
+
   function getBookmarks(): Bookmark[] {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        saveBookmarks(DEFAULT_BOOKMARKS);
+        return DEFAULT_BOOKMARKS;
+      }
+      return JSON.parse(raw);
     } catch {
       return [];
     }
@@ -86,47 +112,77 @@ const t = useTranslations(locale);
   }
 
   function render() {
-    const list = document.getElementById("bookmark-list")!;
+    const container = document.getElementById("bookmark-groups")!;
     const empty = document.getElementById("empty-state")!;
     const bookmarks = getBookmarks();
 
     if (bookmarks.length === 0) {
-      list.innerHTML = "";
+      container.innerHTML = "";
       empty.classList.remove("hidden");
       return;
     }
     empty.classList.add("hidden");
 
-    list.innerHTML = bookmarks
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    const sorted = [...bookmarks].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    const groups: Record<string, Bookmark[]> = {};
+    for (const bm of sorted) {
+      const folder = bm.folder || "未分类";
+      if (!groups[folder]) groups[folder] = [];
+      groups[folder].push(bm);
+    }
+
+    const folderOrder = ["资讯", "AI 工具", "开发者", "工具", "未分类"];
+
+    container.innerHTML = Object.entries(groups)
+      .sort(([a], [b]) => {
+        const ia = folderOrder.indexOf(a);
+        const ib = folderOrder.indexOf(b);
+        return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+      })
       .map(
-        (bm) => `
-          <div class="border-border bg-background hover:border-accent/50 group relative rounded-lg border p-4 transition-colors">
-            <a
-              href="${bm.url}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-accent hover:underline mb-1 block font-medium truncate"
-              title="${bm.title}"
-            >
-              ${bm.title}
-            </a>
-            <p class="text-muted-foreground truncate text-xs">${bm.url}</p>
-            <button
-              data-id="${bm.id}"
-              class="text-muted-foreground hover:text-red-500 absolute top-2 right-2 flex size-6 items-center justify-center rounded text-lg opacity-0 transition-all group-hover:opacity-100"
-              title="删除"
-            >
-              ×
-            </button>
-          </div>
+        ([folder, items]) => `
+          <details class="group mb-6" open>
+            <summary class="hover:text-accent mb-3 flex cursor-pointer items-center gap-2 text-base font-semibold select-none">
+              <span class="text-muted-foreground transition-transform group-open:rotate-90">▶</span>
+              ${folder}
+              <span class="text-muted-foreground ml-1 text-xs">(${items.length})</span>
+            </summary>
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              ${items
+                .map(
+                  (bm) => `
+                    <div class="border-border hover:border-accent/50 bg-background group/item relative rounded-lg border p-3 transition-colors">
+                      <a
+                        href="${bm.url}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-accent hover:underline mb-0.5 block truncate text-sm font-medium"
+                        title="${bm.title}"
+                      >
+                        ${bm.title}
+                      </a>
+                      <p class="text-muted-foreground truncate text-xs">${bm.url}</p>
+                      <button
+                        data-id="${bm.id}"
+                        class="text-muted-foreground hover:text-red-500 hover:bg-border/50 absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded text-base opacity-0 transition-all group-hover/item:opacity-100"
+                        title="删除"
+                      >×</button>
+                    </div>
+                  `
+                )
+                .join("")}
+            </div>
+          </details>
         `
       )
       .join("");
 
-    list.querySelectorAll("[data-id]").forEach((btn) => {
+    container.querySelectorAll("button[data-id]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const id = (btn as HTMLElement).dataset.id;
+        const id = (btn as HTMLElement).dataset.id!;
         const bookmarks = getBookmarks().filter((b) => b.id !== id);
         saveBookmarks(bookmarks);
         render();
@@ -136,12 +192,9 @@ const t = useTranslations(locale);
 
   document.getElementById("bookmark-form")!.addEventListener("submit", (e) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const titleInput = document.getElementById("bm-title") as HTMLInputElement;
-    const urlInput = document.getElementById("bm-url") as HTMLInputElement;
-    const title = titleInput.value.trim();
-    const url = urlInput.value.trim();
-
+    const title = (document.getElementById("bm-title") as HTMLInputElement).value.trim();
+    const url = (document.getElementById("bm-url") as HTMLInputElement).value.trim();
+    const folder = (document.getElementById("bm-folder") as HTMLInputElement).value.trim();
     if (!title || !url) return;
 
     const bookmarks = getBookmarks();
@@ -149,11 +202,13 @@ const t = useTranslations(locale);
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
       title,
       url,
+      folder,
       createdAt: new Date().toISOString(),
     });
     saveBookmarks(bookmarks);
-    titleInput.value = "";
-    urlInput.value = "";
+    (document.getElementById("bm-title") as HTMLInputElement).value = "";
+    (document.getElementById("bm-url") as HTMLInputElement).value = "";
+    (document.getElementById("bm-folder") as HTMLInputElement).value = "";
     render();
   });
 

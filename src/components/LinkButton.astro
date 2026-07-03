@@ -3,9 +3,10 @@ import type { HTMLAttributes } from "astro/types";
 
 type Props = { disabled?: boolean } & HTMLAttributes<"a">;
 
-const { disabled, class: className, ...attrs } = Astro.props;
+const { disabled, class: className, href, ...attrs } = Astro.props;
 
 const Button = disabled ? "span" : "a";
+const buttonAttrs = disabled ? attrs : { ...attrs, href };
 ---
 
 <Button
@@ -15,7 +16,7 @@ const Button = disabled ? "span" : "a";
     { "hover:text-accent": !disabled },
     className,
   ]}
-  {...attrs}
+  {...buttonAttrs}
 >
   <slot />
 </Button>

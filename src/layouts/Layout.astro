@@ -4,7 +4,6 @@ import { ClientRouter } from "astro:transitions";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { resolveDefaultOgImagePath } from "@/utils/resolveDefaultOgImagePath";
 import { getAssetPath } from "@/utils/withBase";
-import Particles from "@/components/Particles.astro";
 import config from "@/config";
 import "@/styles/global.css";
 
@@ -114,7 +113,6 @@ const rssHref = getRelativeLocaleUrl(
   <body
     class="bg-background font-app text-foreground selection:bg-accent/75 selection:text-accent-foreground flex min-h-svh flex-col"
   >
-    <Particles />
     <slot />
     <script>
       import "@/scripts/theme";
